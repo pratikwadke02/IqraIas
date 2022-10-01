@@ -131,9 +131,12 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function User() {
+  const teacher = JSON.parse(localStorage.getItem('profile')).data;
+  console.log(teacher);
   const [comment, setComment] = useState();
   const [resultFile, setResultFile] = useState();
   const [answerEvaluations, setAnswerEvaluations] = useState([]);
+  const [answerEvalData, setAnswerEvalData] = useState([]);
   const [evaluate, setEvaluate] = useState({
     comment: '',
   });
@@ -151,7 +154,7 @@ export default function User() {
 
   useEffect(() => {
     const getCustomerInfoData = async () => {
-      const { data, studentId } = await axios.get(`http://localhost:8000/teacher/getAnswerEvaluations/3`);
+      const { data, studentId } = await axios.get(`http://localhost:8000/teacher/getAnswerEvaluations/${teacher.id}`);
 
       setAnswerEvaluations(data.data);
     };
@@ -246,6 +249,16 @@ export default function User() {
     setAnswerFile(answerFile);
   }
 
+  const handleEval = async(id) => {
+    answerEvaluations.map((answerEvaluation) => {
+      if (answerEvaluation.id === id) {
+        setAnswerEvalData(answerEvaluation);
+      }
+      return null;
+    }); 
+    setOpen(true);
+  }
+
   console.log(answerFile);
 
   const handleSubmit = async (e) => {
@@ -333,7 +346,7 @@ export default function User() {
                         <TableCell align="left">{answerFile}</TableCell>
                         <TableCell align="left">{createdAt.slice(0, 10)}</TableCell>
                         <TableCell align="left">
-                          <Button variant="contained" onClick={handleOpen}>
+                          <Button variant="contained" onClick={()=>handleEval(id)}>
                             Evaluate
                           </Button>
                           <Modal
@@ -352,7 +365,7 @@ export default function User() {
                                       sx={{ width: '100%', ml: { md: 1 }, mt: { xs: 2, md: 0 }, height: '50px' }}
                                       // onClick={() => handleAnswerFile(answerFile)}
                                     >
-                                      Download Copy: {answerFile}
+                                      Download Copy: {answerEvalData.answerFile}
                                       <input hidden accept="image/*" type="file" />
                                     </Button>
                                   </Grid>
