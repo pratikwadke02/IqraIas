@@ -44,14 +44,7 @@ import USERLIST from '../_mock/user';
 
 // ----------------------------------------------------------------------
 
-const TABLE_HEAD = [
-  { id: 'name', label: 'S No', alignRight: false },
-  { id: 'company', label: "Student's Name", alignRight: false },
-  { id: 'role', label: 'Date', alignRight: false },
-  { id: 'isVerified', label: 'Evaluate', alignRight: false },
-  { id: 'status', label: 'Assign To', alignRight: false },
-  { id: '' },
-];
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -141,6 +134,16 @@ export default function User() {
     comment: '',
   });
   const [answerFile, setAnswerFile] = useState();
+
+  const TABLE_HEAD = [
+    { id: 'name', label: 'S No', alignRight: false },
+    { id: 'company', label: "Student's Name", alignRight: false },
+    { id: 'role', label: 'Date', alignRight: false },
+    { id: 'isVerified', label: 'Evaluate', alignRight: false },
+    {
+      id: 'assign', label: 'Assgin To', alignRight: false
+    },
+  ];
 
   const handleResultFile = (e) => {
     setResultFile(e.target.files[0], '$$$$');
@@ -261,19 +264,19 @@ export default function User() {
 
   console.log(answerFile);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, id) => {
     e.preventDefault();
     console.log('hey');
     try {
       const formData = new FormData();
       formData.append('resultFile', resultFile);
       formData.append('comment', comment);
-      formData.append('studentId', 2);
+      formData.append('studentId', id);
       formData.append('answerFile', answerFile);
 
       console.log(formData);
       await axios
-        .post(`http://localhost:8000/teacher/addResult/2`, formData)
+        .post(`http://localhost:8000/teacher/addResult/${id}`, formData)
         .then((res) => {
           console.log(res);
         })
@@ -342,7 +345,7 @@ export default function User() {
                             </Typography>
                           </Stack>
                         </TableCell> */}
-                        <TableCell align="left">{id}</TableCell>
+                        <TableCell align="left">{studentId}</TableCell>
                         <TableCell align="left">{studentName}</TableCell>
                         <TableCell align="left">{createdAt.slice(0, 10)}</TableCell>
                         <TableCell align="left">
@@ -355,7 +358,7 @@ export default function User() {
                             aria-labelledby="modal-modal-title"
                             aria-describedby="modal-modal-description"
                           >
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleSubmit(studentId)}>
                               <Box sx={style}>
                                 <Grid container spacing={3}>
                                   <Grid item xs={6}>
@@ -413,7 +416,9 @@ export default function User() {
                             </form>
                           </Modal>
                         </TableCell>
-                        <TableCell align="left">
+                        {
+                          teacher.role === 'Head' ? (
+                            <TableCell align="left">
                           <Button variant="contained" onClick={handleOpen1}>
                             Assign
                           </Button>
@@ -459,6 +464,12 @@ export default function User() {
                             </Box>
                           </Modal>
                         </TableCell>
+                          ) : (
+                            <TableCell align="left">
+                              NA
+                            </TableCell>
+                          )
+                        }
                         {/* <TableCell align="left">
                           <Label variant="ghost" color={(status === 'banned' && 'error') || 'success'}>
                             {sentenceCase(status)}

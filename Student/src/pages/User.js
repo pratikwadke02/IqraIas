@@ -44,7 +44,6 @@ const TABLE_HEAD = [
   { id: 'file', label: 'Uploaded File', alignRight: false },
   { id: 'result', label: 'Result', alignRight: false },
   // { id: 'status', label: 'Status', alignRight: false },
-  { id: '' },
 ];
 const style = {
   position: 'absolute',
@@ -91,6 +90,8 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function User() {
+  const student = JSON.parse(localStorage.getItem('profile')).data;
+  console.log(student);
   const [teacher, setTeacher] = useState([]);
   // const [selectedTeacher, setSelectedTeacher] = useState('');
   const [answerFile, setAnswerFile] = useState();
@@ -215,8 +216,8 @@ export default function User() {
       const formData = new FormData();
       formData.append('answerFile', answerFile);
       formData.append('teacherId', answerEvaluation.teacher);
-      formData.append('studentId', 2);
-      formData.append('studentName', 'Student2');
+      formData.append('studentId', student.id);
+      formData.append('studentName', student.name);
 
       console.log(formData);
       await axios
