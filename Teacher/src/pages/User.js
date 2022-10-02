@@ -343,7 +343,7 @@ export default function User() {
                           </Stack>
                         </TableCell> */}
                         <TableCell align="left">{id}</TableCell>
-                        <TableCell align="left">{answerFile}</TableCell>
+                        <TableCell align="left">{studentName}</TableCell>
                         <TableCell align="left">{createdAt.slice(0, 10)}</TableCell>
                         <TableCell align="left">
                           <Button variant="contained" onClick={()=>handleEval(id)}>
@@ -365,7 +365,7 @@ export default function User() {
                                       sx={{ width: '100%', ml: { md: 1 }, mt: { xs: 2, md: 0 }, height: '50px' }}
                                       // onClick={() => handleAnswerFile(answerFile)}
                                     >
-                                      Download Copy: {answerEvalData.answerFile}
+                                      Download Copy
                                       <input hidden accept="image/*" type="file" />
                                     </Button>
                                   </Grid>
