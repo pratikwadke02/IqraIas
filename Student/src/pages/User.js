@@ -115,7 +115,7 @@ export default function User() {
     };
 
     const getResults = async () => {
-      const { data } = await axios.get('http://localhost:8000/student/getResults/2');
+      const { data } = await axios.get(`http://localhost:8000/student/getResults/${student.id}`);
       setResults(data.data);
       console.log(data.data);
     };
@@ -334,7 +334,7 @@ export default function User() {
                   />
                   <TableBody>
                     {results.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                      const { id, name, createdAt, comment, resultFile } = row;
+                      const { id, name, createdAt, comment, resultFile, answerFile } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
@@ -379,6 +379,7 @@ export default function User() {
                                 <Grid container spacing={3}>
                                   <Grid item xs={12}>
                                     <Typography variant="h6">Uploaded Copy:</Typography>
+                                    <div>{answerFile}</div>
                                   </Grid>
                                 </Grid>
                               </Box>

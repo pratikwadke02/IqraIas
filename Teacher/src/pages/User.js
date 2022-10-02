@@ -44,7 +44,6 @@ import USERLIST from '../_mock/user';
 
 // ----------------------------------------------------------------------
 
-
 const style = {
   position: 'absolute',
   top: '50%',
@@ -136,12 +135,14 @@ export default function User() {
   const [answerFile, setAnswerFile] = useState();
 
   const TABLE_HEAD = [
-    { id: 'name', label: 'S No', alignRight: false },
+    { id: 'name', label: 'Student ID', alignRight: false },
     { id: 'company', label: "Student's Name", alignRight: false },
     { id: 'role', label: 'Date', alignRight: false },
     { id: 'isVerified', label: 'Evaluate', alignRight: false },
     {
-      id: 'assign', label: 'Assgin To', alignRight: false
+      id: 'assign',
+      label: 'Assgin To',
+      alignRight: false,
     },
   ];
 
@@ -252,31 +253,58 @@ export default function User() {
     setAnswerFile(answerFile);
   }
 
-  const handleEval = async(id) => {
+  const handleEval = async (id) => {
     answerEvaluations.map((answerEvaluation) => {
       if (answerEvaluation.id === id) {
         setAnswerEvalData(answerEvaluation);
       }
       return null;
-    }); 
+    });
     setOpen(true);
-  }
+  };
 
   console.log(answerFile);
 
-  const handleSubmit = async (e, id) => {
+  // const updateEvalFile = async () => {
+  //   console.log('hey');
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append('resultFile', resultFile);
+  //     formData.append('comment', comment);
+  //     formData.append('studentId', id);
+  //     formData.append('answerFile', answerFile);
+
+  //     console.log(formData);
+  //     await axios
+  //       .post(`http://localhost:8000/teacher/addResult/${id}`, formData)
+  //       .then((res) => {
+  //         console.log(res);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //     setEvaluate({
+  //       comment: '',
+  //     });
+
+  //     alert('Information submitted successfully');
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('hey');
+    console.log(answerEvalData.answerFile);
     try {
       const formData = new FormData();
       formData.append('resultFile', resultFile);
       formData.append('comment', comment);
-      formData.append('studentId', id);
-      formData.append('answerFile', answerFile);
+      formData.append('studentId', answerEvalData.studentId);
+      formData.append('answerFile', answerEvalData.answerFile.toString());
 
-      console.log(formData);
       await axios
-        .post(`http://localhost:8000/teacher/addResult/${id}`, formData)
+        .post(`http://localhost:8000/teacher/addResult/${answerEvalData.studentId}`, formData)
         .then((res) => {
           console.log(res);
         })
@@ -292,6 +320,9 @@ export default function User() {
       console.log(error);
     }
   };
+
+  // console.log(formData);
+  console.log(answerEvalData);
 
   return (
     <Page title="User">
@@ -349,7 +380,7 @@ export default function User() {
                         <TableCell align="left">{studentName}</TableCell>
                         <TableCell align="left">{createdAt.slice(0, 10)}</TableCell>
                         <TableCell align="left">
-                          <Button variant="contained" onClick={()=>handleEval(id)}>
+                          <Button variant="contained" onClick={() => handleEval(id)}>
                             Evaluate
                           </Button>
                           <Modal
@@ -358,19 +389,20 @@ export default function User() {
                             aria-labelledby="modal-modal-title"
                             aria-describedby="modal-modal-description"
                           >
-                            <form onSubmit={handleSubmit(studentId)}>
+                            <form onSubmit={handleSubmit}>
                               <Box sx={style}>
                                 <Grid container spacing={3}>
                                   <Grid item xs={6}>
-                                    <Button
-                                      variant="outlined"
-                                      component="label"
-                                      sx={{ width: '100%', ml: { md: 1 }, mt: { xs: 2, md: 0 }, height: '50px' }}
-                                      // onClick={() => handleAnswerFile(answerFile)}
-                                    >
-                                      Download Copy
-                                      <input hidden accept="image/*" type="file" />
-                                    </Button>
+                                    <a href={answerEvalData.answerFile} target="_blank" rel="noreferrer">
+                                      <Button
+                                        variant="outlined"
+                                        component="label"
+                                        sx={{ width: '100%', ml: { md: 1 }, mt: { xs: 2, md: 0 }, height: '50px' }}
+                                        // onClick={() => handleAnswerFile(answerFile)}
+                                      >
+                                        View Answer Copy
+                                      </Button>
+                                    </a>
                                   </Grid>
                                   <Grid item xs={6}>
                                     <Button
@@ -416,60 +448,56 @@ export default function User() {
                             </form>
                           </Modal>
                         </TableCell>
-                        {
-                          teacher.role === 'Head' ? (
-                            <TableCell align="left">
-                          <Button variant="contained" onClick={handleOpen1}>
-                            Assign
-                          </Button>
-                          <Modal
-                            open={open1}
-                            onClose={handleClose1}
-                            aria-labelledby="modal-modal-title"
-                            aria-describedby="modal-modal-description"
-                          >
-                            <Box sx={style1}>
-                              <Grid container spacing={3}>
-                                <Grid item xs={12}>
-                                  <FormControl fullWidth>
-                                    <InputLabel id="demo-multiple-checkbox-label">Assign To</InputLabel>
-                                    <Select
-                                      labelId="demo-multiple-checkbox-label"
-                                      id="demo-multiple-checkbox"
-                                      multiple
-                                      value={personName}
-                                      onChange={handleChange}
-                                      input={<OutlinedInput label="Tag" />}
-                                      renderValue={(selected) => selected.join(', ')}
-                                      MenuProps={MenuProps}
+                        {teacher.role === 'Head' ? (
+                          <TableCell align="left">
+                            <Button variant="contained" onClick={handleOpen1}>
+                              Assign
+                            </Button>
+                            <Modal
+                              open={open1}
+                              onClose={handleClose1}
+                              aria-labelledby="modal-modal-title"
+                              aria-describedby="modal-modal-description"
+                            >
+                              <Box sx={style1}>
+                                <Grid container spacing={3}>
+                                  <Grid item xs={12}>
+                                    <FormControl fullWidth>
+                                      <InputLabel id="demo-multiple-checkbox-label">Assign To</InputLabel>
+                                      <Select
+                                        labelId="demo-multiple-checkbox-label"
+                                        id="demo-multiple-checkbox"
+                                        multiple
+                                        value={personName}
+                                        onChange={handleChange}
+                                        input={<OutlinedInput label="Tag" />}
+                                        renderValue={(selected) => selected.join(', ')}
+                                        MenuProps={MenuProps}
+                                      >
+                                        {names.map((name) => (
+                                          <MenuItem key={name} value={name}>
+                                            <Checkbox checked={personName.indexOf(name) > -1} />
+                                            <ListItemText primary={name} />
+                                          </MenuItem>
+                                        ))}
+                                      </Select>
+                                    </FormControl>
+                                  </Grid>
+                                  <Grid item xs={12}>
+                                    <Button
+                                      variant="contained"
+                                      // onClick={handleOpen2}
                                     >
-                                      {names.map((name) => (
-                                        <MenuItem key={name} value={name}>
-                                          <Checkbox checked={personName.indexOf(name) > -1} />
-                                          <ListItemText primary={name} />
-                                        </MenuItem>
-                                      ))}
-                                    </Select>
-                                  </FormControl>
+                                      Assign
+                                    </Button>
+                                  </Grid>
                                 </Grid>
-                                <Grid item xs={12}>
-                                  <Button
-                                    variant="contained"
-                                    // onClick={handleOpen2}
-                                  >
-                                    Assign
-                                  </Button>
-                                </Grid>
-                              </Grid>
-                            </Box>
-                          </Modal>
-                        </TableCell>
-                          ) : (
-                            <TableCell align="left">
-                              NA
-                            </TableCell>
-                          )
-                        }
+                              </Box>
+                            </Modal>
+                          </TableCell>
+                        ) : (
+                          <TableCell align="left">NA</TableCell>
+                        )}
                         {/* <TableCell align="left">
                           <Label variant="ghost" color={(status === 'banned' && 'error') || 'success'}>
                             {sentenceCase(status)}
