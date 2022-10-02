@@ -133,6 +133,7 @@ export default function User() {
     comment: '',
   });
   const [answerFile, setAnswerFile] = useState();
+  const [teacherInfo, setTeacherInfo] = useState([]);
 
   const TABLE_HEAD = [
     { id: 'name', label: 'Student ID', alignRight: false },
@@ -158,12 +159,18 @@ export default function User() {
 
   useEffect(() => {
     const getCustomerInfoData = async () => {
-      const { data, studentId } = await axios.get(`http://localhost:8000/teacher/getAnswerEvaluations/${teacher.id}`);
-
+      const { data } = await axios.get(`http://localhost:8000/teacher/getAnswerEvaluations/${teacher.id}`);
       setAnswerEvaluations(data.data);
     };
 
     getCustomerInfoData();
+
+    const getTeacherData = async () => {
+      const { data } = await axios.get('http://localhost:8000/teacher/getTeachers');
+      console.log(data.data);
+      setTeacherInfo(data.data);
+    };
+    getTeacherData();
   }, []);
 
   console.log(answerEvaluations);
@@ -322,7 +329,8 @@ export default function User() {
   };
 
   // console.log(formData);
-  console.log(answerEvalData);
+  // console.log(answerEvalData);
+  console.log(teacherInfo);
 
   return (
     <Page title="User">
@@ -393,7 +401,7 @@ export default function User() {
                               <Box sx={style}>
                                 <Grid container spacing={3}>
                                   <Grid item xs={6}>
-                                    <a href={answerEvalData.answerFile} target="_blank" rel="noreferrer">
+                                    <a href={answerEvalData.answerFile} target="_blank" rel="noreferrer" style={{textDecoration:'none'}}>
                                       <Button
                                         variant="outlined"
                                         component="label"
@@ -467,19 +475,19 @@ export default function User() {
                                       <Select
                                         labelId="demo-multiple-checkbox-label"
                                         id="demo-multiple-checkbox"
-                                        multiple
+                                        
                                         value={personName}
                                         onChange={handleChange}
-                                        input={<OutlinedInput label="Tag" />}
-                                        renderValue={(selected) => selected.join(', ')}
-                                        MenuProps={MenuProps}
+                                        input={<OutlinedInput label="Assin To" />}
+                                        
                                       >
-                                        {names.map((name) => (
-                                          <MenuItem key={name} value={name}>
-                                            <Checkbox checked={personName.indexOf(name) > -1} />
-                                            <ListItemText primary={name} />
-                                          </MenuItem>
-                                        ))}
+                                        {
+                                          teacherInfo.map((teacher) => (
+                                            <MenuItem key={teacher.id} value={teacher.name}>
+                                              {teacher.name}
+                                            </MenuItem>
+                                          ))
+                                        }
                                       </Select>
                                     </FormControl>
                                   </Grid>

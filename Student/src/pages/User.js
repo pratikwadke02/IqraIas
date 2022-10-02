@@ -39,7 +39,8 @@ import USERLIST from '../_mock/user';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'S No', alignRight: false },
+  { id: 'name', label: 'No.', alignRight: false },
+  { id: 'email', label: 'Comment', alignRight: false },
   { id: 'date', label: 'Date', alignRight: false },
   { id: 'file', label: 'Uploaded File', alignRight: false },
   { id: 'result', label: 'Result', alignRight: false },
@@ -358,6 +359,7 @@ export default function User() {
                           </Stack>
                         </TableCell> */}
                           <TableCell align="left">{id}</TableCell>
+                          <TableCell align="left">{comment}</TableCell>
                           <TableCell align="left">{createdAt.slice(0, 10)}</TableCell>
                           {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
                           {/* <TableCell align="left">
@@ -366,9 +368,11 @@ export default function User() {
                           </Label>
                         </TableCell> */}
                           <TableCell align="left">
-                            <Button variant="contained" onClick={handleOpen1}>
+                            <a href={answerFile} target="_blank" rel="noreferrer" style={{textDecoration:'none'}}>
+                            <Button variant="contained">
                               View
                             </Button>
+                            </a>
                             <Modal
                               open={open1}
                               onClose={handleClose1}
@@ -386,9 +390,11 @@ export default function User() {
                             </Modal>
                           </TableCell>
                           <TableCell align="left">
-                            <Button variant="contained" onClick={handleOpen}>
+                            <a href={resultFile} target="_blank" rel="noreferrer" style={{textDecoration:'none'}}>
+                            <Button variant="contained">
                               View
                             </Button>
+                            </a>
                             <Modal
                               open={open}
                               onClose={handleClose}
