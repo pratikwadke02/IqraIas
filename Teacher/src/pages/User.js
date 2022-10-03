@@ -133,6 +133,7 @@ export default function User() {
     comment: '',
   });
   const [answerFile, setAnswerFile] = useState();
+  const [assistants, setAssistants] = useState([]);
   const [teacherInfo, setTeacherInfo] = useState([]);
 
   const TABLE_HEAD = [
@@ -158,22 +159,34 @@ export default function User() {
   };
 
   useEffect(() => {
+    // the following is to set assistants in the dropdown on the Teacher panel, if the logged in teacher has the role of a 'Head'
+    const getAssistants = async () => {
+      const { data } = await axios.get(`http://localhost:8000/teacher/getAssistants`);
+
+      setAssistants(data.data);
+    };
+
     const getCustomerInfoData = async () => {
-      const { data } = await axios.get(`http://localhost:8000/teacher/getAnswerEvaluations/${teacher.id}`);
+      const { data, studentId } = await axios.get(`http://localhost:8000/teacher/getAnswerEvaluations/${teacher.id}`);
+
       setAnswerEvaluations(data.data);
+      if (teacher.role === 'Head') {
+        getAssistants();
+      }
     };
 
     getCustomerInfoData();
 
-    const getTeacherData = async () => {
-      const { data } = await axios.get('http://localhost:8000/teacher/getTeachers');
-      console.log(data.data);
-      setTeacherInfo(data.data);
-    };
-    getTeacherData();
+    // const getTeacherData = async () => {
+    //   const { data } = await axios.get('http://localhost:8000/teacher/getTeachers');
+    //   console.log(data.data);
+    //   setTeacherInfo(data.data);
+    // };
+    // getTeacherData();
   }, []);
 
   console.log(answerEvaluations);
+  console.log(assistants);
 
   const [personName, setPersonName] = React.useState([]);
 
