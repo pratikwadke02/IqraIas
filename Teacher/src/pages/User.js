@@ -1,4 +1,4 @@
-import { filter } from 'lodash';
+import { filter, update } from 'lodash';
 import axios from 'axios';
 import { sentenceCase } from 'change-case';
 import React, { useEffect, useState } from 'react';
@@ -162,12 +162,12 @@ export default function User() {
     // the following is to set assistants in the dropdown on the Teacher panel, if the logged in teacher has the role of a 'Head'
     const getAssistants = async () => {
       const { data } = await axios.get(`http://localhost:8000/teacher/getAssistants`);
-
+      console.log(data.data);
       setAssistants(data.data);
     };
 
     const getCustomerInfoData = async () => {
-      const { data, studentId } = await axios.get(`http://localhost:8000/teacher/getAnswerEvaluations/${teacher.id}`);
+      const { data } = await axios.get(`http://localhost:8000/teacher/getAnswerEvaluations/${teacher.id}`);
 
       setAnswerEvaluations(data.data);
       if (teacher.role === 'Head') {
@@ -188,16 +188,10 @@ export default function User() {
   console.log(answerEvaluations);
   console.log(assistants);
 
-  const [personName, setPersonName] = React.useState([]);
+  const [personName, setPersonName] = React.useState();
 
   const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value
-    );
+    setPersonName(event.target.value);
   };
 
   const [page, setPage] = useState(0);
@@ -282,6 +276,16 @@ export default function User() {
     });
     setOpen(true);
   };
+ 
+  const handleAssignModal = async(id) => {
+    answerEvaluations.map((answerEvaluation) => {
+      if (answerEvaluation.id === id) {
+        setAnswerEvalData(answerEvaluation);
+      }
+      return null;
+    });
+    setOpen1(true);
+  }
 
   console.log(answerFile);
 
@@ -340,6 +344,22 @@ export default function User() {
       console.log(error);
     }
   };
+
+  const handleAssign = async(e) => {
+    e.preventDefault();
+    try {
+      console.log(answerEvalData.id)
+      console.log(personName);
+      // const parsedId = parseInt(answerEvalData.id , 10);
+      // console.log(parsedId);
+      const {data} = await axios.put(`http://localhost:8000/teacher/assignAssistant/${answerEvalData.id}`, personName );
+      console.log(data);
+      alert('Assigned successfully');
+      setOpen1(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   // console.log(formData);
   // console.log(answerEvalData);
@@ -433,7 +453,7 @@ export default function User() {
                                       component="label"
                                       sx={{ width: '100%', ml: { md: 1 }, mt: { xs: 2, md: 0 }, height: '50px' }}
                                     >
-                                      Upload Copy
+                                      Upload Evaluated Copy
                                       <input
                                         hidden
                                         // accept="image/*"
@@ -471,7 +491,7 @@ export default function User() {
                         </TableCell>
                         {teacher.role === 'Head' ? (
                           <TableCell align="left">
-                            <Button variant="contained" onClick={handleOpen1}>
+                            <Button variant="contained" onClick={()=>handleAssignModal(id)}>
                               Assign
                             </Button>
                             <Modal
@@ -480,6 +500,7 @@ export default function User() {
                               aria-labelledby="modal-modal-title"
                               aria-describedby="modal-modal-description"
                             >
+                              <form onSubmit={handleAssign}>
                               <Box sx={style1}>
                                 <Grid container spacing={3}>
                                   <Grid item xs={12}>
@@ -495,8 +516,8 @@ export default function User() {
                                         
                                       >
                                         {
-                                          teacherInfo.map((teacher) => (
-                                            <MenuItem key={teacher.id} value={teacher.name}>
+                                          assistants.map((teacher) => (
+                                            <MenuItem key={teacher.id} value={teacher.id}>
                                               {teacher.name}
                                             </MenuItem>
                                           ))
@@ -507,6 +528,7 @@ export default function User() {
                                   <Grid item xs={12}>
                                     <Button
                                       variant="contained"
+                                      type="submit"
                                       // onClick={handleOpen2}
                                     >
                                       Assign
@@ -514,6 +536,7 @@ export default function User() {
                                   </Grid>
                                 </Grid>
                               </Box>
+                              </form>
                             </Modal>
                           </TableCell>
                         ) : (
