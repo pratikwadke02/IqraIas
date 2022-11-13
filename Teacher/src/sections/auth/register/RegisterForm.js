@@ -32,6 +32,7 @@ export default function RegisterForm() {
     name: '',
     subject: '',
     role: '',
+    boss:'',
     email: '',
     contactNumber: '',
     password: '',
@@ -42,6 +43,14 @@ export default function RegisterForm() {
     setRegisterForm({
       ...registerForm,
       role: event.target.value,
+    });
+    console.log(registerForm);
+  };
+
+  const handleBoss = (event) => {
+    setRegisterForm({
+      ...registerForm,
+      boss: event.target.value,
     });
     console.log(registerForm);
   };
@@ -98,6 +107,23 @@ export default function RegisterForm() {
                     </Select>
         </FormControl>
           <TextField name="contactNumber" label="Contact Number" fullWidth value={registerForm.contactNumber} onChange={handleChange} />
+        </Stack>
+        <Stack direction={{ xs: 'column', sm: 'column' }} spacing={2}>
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Select Boss</InputLabel>
+        <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={registerForm.boss}
+                      label="Select Boss"
+                      onChange={handleBoss}
+                    >
+                      <MenuItem value="Sanjay Sir">Sanjay Sir</MenuItem>
+                      <MenuItem value="Sunita Mam">Sunita Mam</MenuItem>
+                      <MenuItem value="Sanajana Mam">Sanjana Mam</MenuItem>
+                    </Select>
+        </FormControl>
+          {/* <TextField name="contactNumber" label="Contact Number" fullWidth value={registerForm.contactNumber} onChange={handleChange} /> */}
         </Stack>
 
         <TextField name="email" label="Email address" value={registerForm.email} onChange={handleChange} />

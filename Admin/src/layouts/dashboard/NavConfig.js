@@ -13,12 +13,27 @@ const navConfig = [
   // },
   {
     title: 'teachers',
-    path: '/dashboard/teachers',
+    path: '/teachers',
     icon: getIcon('eva:people-fill'),
   },
   {
     title: 'students',
-    path: '/dashboard/students',
+    path: '/students',
+    icon: getIcon('eva:people-fill'),
+  },
+  {
+    title: 'Questions',
+    path: '/questions',
+    icon: getIcon('eva:people-fill'),
+  },
+  {
+    title: 'Previous Year Papers',
+    path: '/previousYearPapers',
+    icon: getIcon('eva:people-fill'),
+  },
+  {
+    title: 'Assign To',
+    path: '/assignTo',
     icon: getIcon('eva:people-fill'),
   },
   // {

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
-import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText, Button } from '@mui/material';
 // component
 import Iconify from '../../../components/Iconify';
 
@@ -34,12 +34,23 @@ export default function UserMoreMenu() {
           <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
         </MenuItem>
 
-        <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
+        <Button variant="text" fullWidth component="label" sx={{alignItems:'left', justifyContent:'left', p
+        :'0px'}}>
+        <MenuItem sx={{ color: 'text.secondary' }}>
+        
           <ListItemIcon>
             <Iconify icon="eva:edit-fill" width={24} height={24} />
           </ListItemIcon>
+          
           <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
+          <input
+                hidden
+                // accept="image/*"
+                type="file"
+              />
+                   
         </MenuItem>
+        </Button> 
       </Menu>
     </>
   );

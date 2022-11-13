@@ -5,24 +5,30 @@ import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 //
 import Blog from './pages/Blog';
 import User from './pages/Teachers';
+import AssignTo from './pages/AssignTo';
 import Login from './pages/Login';
 import NotFound from './pages/Page404';
 import Register from './pages/Register';
 import Products from './pages/Products';
 import DashboardApp from './pages/DashboardApp';
 import Students from './pages/Students';
+import Questions from './pages/Questions'
+import PreviousYearPapers from './pages/PreviousYearPapers';
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   return useRoutes([
     {
-      path: '/dashboard',
+      path: '/',
       element: <DashboardLayout />,
       children: [
         // { path: 'app', element: <DashboardApp /> },
         { path: 'teachers', element: <User /> },
         { path: 'students', element: <Students /> },
+        { path: 'questions', element: <Questions /> },
+        { path: 'assignTo', element: <AssignTo /> },
+        { path: 'previousYearPapers', element: <PreviousYearPapers /> },
         // { path: 'products', element: <Products /> },
         // { path: 'blog', element: <Blog /> },
       ],

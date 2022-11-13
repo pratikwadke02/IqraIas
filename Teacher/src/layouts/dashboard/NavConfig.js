@@ -16,6 +16,11 @@ const navConfig = [
     path: '/dashboard/answerEvaluation',
     icon: getIcon('eva:people-fill'),
   },
+  {
+    title: 'Approve',
+    path: '/dashboard/approval',
+    icon: getIcon('eva:people-fill'),
+  },
   // {
   //   title: 'product',
   //   path: '/dashboard/products',
@@ -41,11 +46,11 @@ const navConfig = [
   //   path: '/login',
   //   icon: getIcon('eva:lock-fill'),
   // },
-  // {
-  //   title: 'register',
-  //   path: '/register',
-  //   icon: getIcon('eva:person-add-fill'),
-  // },
+  {
+    title: 'register',
+    path: '/register',
+    icon: getIcon('eva:person-add-fill'),
+  },
   // {
   //   title: 'Not found',
   //   path: '/404',

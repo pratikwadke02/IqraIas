@@ -26,6 +26,7 @@ import {
   InputLabel,
 } from '@mui/material';
 import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
 // components
 import Page from '../components/Page';
 import Label from '../components/Label';
@@ -42,6 +43,7 @@ const TABLE_HEAD = [
   { id: 'name', label: 'No.', alignRight: false },
   { id: 'email', label: 'Comment', alignRight: false },
   { id: 'date', label: 'Date', alignRight: false },
+  { id: 'subject', label: 'Subject', alignRight: false },
   { id: 'file', label: 'Uploaded File', alignRight: false },
   { id: 'result', label: 'Result', alignRight: false },
   // { id: 'status', label: 'Status', alignRight: false },
@@ -98,6 +100,7 @@ export default function User() {
   const [answerFile, setAnswerFile] = useState();
   const [answerEvaluation, setAnswerEvaluation] = useState({
     teacher: '',
+    subject:'',
   });
   const [results, setResults] = useState([]);
 
@@ -219,6 +222,7 @@ export default function User() {
       formData.append('teacherId', answerEvaluation.teacher);
       formData.append('studentId', student.id);
       formData.append('studentName', student.name);
+      formData.append('studentSubject', student.subject);
 
       console.log(formData);
       await axios
@@ -232,35 +236,13 @@ export default function User() {
 
       setAnswerEvaluation({
         teacher: '',
+        subject:'',
       });
       alert('Information submitted successfully');
     } catch (error) {
       console.log(error);
     }
   };
-  const [customerInfo, setCustomerInfo] = useState([
-    {
-      id: '1',
-      date: '12/08/2022',
-    },
-    {
-      id: '2',
-      date: '15/08/2022',
-    },
-    {
-      id: '3',
-      date: '27/08/2022',
-    },
-    {
-      id: '4',
-      date: '31/08/2022',
-    },
-    {
-      id: '5',
-      date: '12/09/2022',
-    },
-  ]);
-
   return (
     <Page title="User">
       <Container>
@@ -278,10 +260,6 @@ export default function User() {
                       label="Select Teacher"
                       onChange={handleSelectedTeacher}
                     >
-                      {/* <MenuItem value={'Site Survey'}>Site Survey</MenuItem>
-                      <MenuItem value={'Kitchen Installation'}>Kitchen Installation</MenuItem>
-                      <MenuItem value={'Wardrobe Installation'}>Wardrobe Installation</MenuItem>
-                      <MenuItem value={'Product Service'}>Product Service</MenuItem> */}
                       {teacher
                         ? teacher.map((t, idx) => {
                             return <MenuItem value={t.id}>{t.name}</MenuItem>;
@@ -306,6 +284,18 @@ export default function User() {
                       type="file"
                     />
                   </Button>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                <TextField
+                label="Subject"
+                variant="outlined"
+                fullWidth
+                // sx={{ mr: { md: 1 } }}
+                type="text"
+                name="subject"
+                value={answerEvaluation.subject}
+                onChange={handleChange}
+              />
                 </Grid>
               </Grid>
               <Box mt={3}>
@@ -335,7 +325,7 @@ export default function User() {
                   />
                   <TableBody>
                     {results.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                      const { id, name, createdAt, comment, resultFile, answerFile } = row;
+                      const { id, name, createdAt, comment, resultFile, answerFile,subject} = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
@@ -350,23 +340,10 @@ export default function User() {
                           <TableCell padding="checkbox">
                             <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
                           </TableCell>
-                          {/* <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                          </Stack>
-                        </TableCell> */}
                           <TableCell align="left">{id}</TableCell>
                           <TableCell align="left">{comment}</TableCell>
                           <TableCell align="left">{createdAt.slice(0, 10)}</TableCell>
-                          {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
-                          {/* <TableCell align="left">
-                          <Label variant="ghost" color={(status === 'banned' && 'error') || 'success'}>
-                            {sentenceCase(status)}
-                          </Label>
-                        </TableCell> */}
+                          <TableCell align="left">{subject}</TableCell>
                           <TableCell align="left">
                             <a href={answerFile} target="_blank" rel="noreferrer" style={{textDecoration:'none'}}>
                             <Button variant="contained">

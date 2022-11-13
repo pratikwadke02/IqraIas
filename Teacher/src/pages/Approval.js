@@ -122,7 +122,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function User() {
+export default function Approval() {
   const teacher = JSON.parse(localStorage.getItem('profile')).data;
   console.log(teacher);
   const [comment, setComment] = useState();
@@ -137,15 +137,11 @@ export default function User() {
   const [teacherInfo, setTeacherInfo] = useState([]);
 
   const TABLE_HEAD = [
-    { id: 'name', label: 'Student ID', alignRight: false },
-    { id: 'company', label: "Student's Name", alignRight: false },
-    { id: 'role', label: 'Date', alignRight: false },
-    { id: 'isVerified', label: 'Evaluate', alignRight: false },
-    {
-      id: 'assign',
-      label: 'Assgin To',
-      alignRight: false,
-    },
+    { id: 'Id', label: 'Id', alignRight: false },
+    { id: 'name', label: "Name", alignRight: false },
+    { id: 'date', label: 'Date', alignRight: false },
+    { id: 'view', label: 'View', alignRight: false },
+    
   ];
 
   const handleResultFile = (e) => {
@@ -422,7 +418,7 @@ export default function User() {
                         <TableCell align="left">{createdAt.slice(0, 10)}</TableCell>
                         <TableCell align="left">
                           <Button variant="contained" onClick={() => handleEval(id)}>
-                            Evaluate
+                            View
                           </Button>
                           <Modal
                             open={open}
@@ -433,47 +429,8 @@ export default function User() {
                             <form onSubmit={handleSubmit}>
                               <Box sx={style}>
                                 <Grid container spacing={3}>
-                                  <Grid item xs={6}>
-                                    <a href={answerEvalData.answerFile} target="_blank" rel="noreferrer" style={{textDecoration:'none'}}>
-                                      <Button
-                                        variant="outlined"
-                                        component="label"
-                                        sx={{ width: '100%', ml: { md: 1 }, mt: { xs: 2, md: 0 }, height: '50px' }}
-                                        // onClick={() => handleAnswerFile(answerFile)}
-                                      >
-                                        View/Download Answer Copy
-                                      </Button>
-                                    </a>
-                                  </Grid>
-                                  <Grid item xs={6}>
-                                    <Button
-                                      variant="outlined"
-                                      value={resultFile}
-                                      onChange={(e) => handleResultFile(e)}
-                                      component="label"
-                                      sx={{ width: '100%', ml: { md: 1 }, mt: { xs: 2, md: 0 }, height: '50px' }}
-                                    >
-                                      Upload Evaluated Copy
-                                      <input
-                                        hidden
-                                        // accept="image/*"
-                                        type="file"
-                                      />
-                                    </Button>
-                                  </Grid>
                                   <Grid item xs={12}>
-                                    <TextField
-                                      label="Comment"
-                                      value={comment}
-                                      onChange={(e) => handleComment(e)}
-                                      variant="outlined"
-                                      fullWidth
-                                      sx={{ mr: { md: 1 } }}
-                                      type="text"
-                                      name="comment"
-                                      // value={sList.oldPassword}
-                                      // onChange={handleChange}
-                                    />
+                                   View
                                   </Grid>
                                 </Grid>
                                 <Box mt={3}>
@@ -489,59 +446,6 @@ export default function User() {
                             </form>
                           </Modal>
                         </TableCell>
-                        {teacher.role === 'Head' ? (
-                          <TableCell align="left">
-                            <Button variant="contained" onClick={()=>handleAssignModal(id)}>
-                              Assign
-                            </Button>
-                            <Modal
-                              open={open1}
-                              onClose={handleClose1}
-                              aria-labelledby="modal-modal-title"
-                              aria-describedby="modal-modal-description"
-                            >
-                              <form onSubmit={handleAssign}>
-                              <Box sx={style1}>
-                                <Grid container spacing={3}>
-                                  <Grid item xs={12}>
-                                    <FormControl fullWidth>
-                                      <InputLabel id="demo-multiple-checkbox-label">Assign To</InputLabel>
-                                      <Select
-                                        labelId="demo-multiple-checkbox-label"
-                                        id="demo-multiple-checkbox"
-                                        
-                                        value={personName}
-                                        onChange={handleChange}
-                                        input={<OutlinedInput label="Assign To" />}
-                                        
-                                      >
-                                        {
-                                          assistants.map((teacher) => (
-                                            <MenuItem key={teacher.id} value={teacher.id}>
-                                              {teacher.name}
-                                            </MenuItem>
-                                          ))
-                                        }
-                                      </Select>
-                                    </FormControl>
-                                  </Grid>
-                                  <Grid item xs={12}>
-                                    <Button
-                                      variant="contained"
-                                      type="submit"
-                                      // onClick={handleOpen2}
-                                    >
-                                      Assign
-                                    </Button>
-                                  </Grid>
-                                </Grid>
-                              </Box>
-                              </form>
-                            </Modal>
-                          </TableCell>
-                        ) : (
-                          <TableCell align="left">NA</TableCell>
-                        )}
                         {/* <TableCell align="left">
                           <Label variant="ghost" color={(status === 'banned' && 'error') || 'success'}>
                             {sentenceCase(status)}

@@ -5,8 +5,8 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 
-import TeacherDetails from '../sections/@dashboard/teacher/TeacherDetails';
-import TeacherPending from '../sections/@dashboard/teacher/TeacherPending';
+import AddPaper from '../sections/@dashboard/previousYearPapers/AddPaper'
+import AllPapers from '../sections/@dashboard/previousYearPapers/AllPapers'
 
 const Teachers = () => {
   const [value, setValue] = React.useState('1');
@@ -22,12 +22,12 @@ const Teachers = () => {
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} aria-label="lab API tabs example">
-                <Tab label="Teacher Details" value="1" />
-                <Tab label="Pending" value="2" />
+                <Tab label="Add New Paper" value="1" />
+                <Tab label="All Papers" value="2" />
               </TabList>
             </Box>
-            <TabPanel value="1"><TeacherDetails/></TabPanel>
-            <TabPanel value="2"><TeacherPending/></TabPanel>
+            <TabPanel value="1"><AddPaper/></TabPanel>
+            <TabPanel value="2"><AllPapers/></TabPanel>
           </TabContext>
         </Box>
       </Card>
