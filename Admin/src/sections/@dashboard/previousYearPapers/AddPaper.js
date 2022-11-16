@@ -35,7 +35,7 @@ import Prelims from './Prelims';
 import Mains from './Mains';
 
 const AddPaper = () => {
-  // const [value, setValue] = React.useState(dayjs('2022-04-07'));
+  const [value, setValue] = React.useState(dayjs('2022-04-07'));
   const [year, setYear] = useState();
   const [paperType, setPaperType] = useState();
   const [pyqs, setPyqs] = useState({

@@ -12,6 +12,7 @@ import Register from './pages/Register';
 import Products from './pages/Products';
 import DashboardApp from './pages/DashboardApp';
 import Students from './pages/Students';
+import Courses from './pages/Courses';
 import Questions from './pages/Questions'
 import PreviousYearPapers from './pages/PreviousYearPapers';
 
@@ -23,11 +24,12 @@ export default function Router() {
       path: '/',
       element: <DashboardLayout />,
       children: [
-        // { path: 'app', element: <DashboardApp /> },
-        { path: 'teachers', element: <User /> },
+        // { path: 'teachers', element: <DashboardApp /> },
+        { path: '/teachers', element: <User /> },
         { path: 'students', element: <Students /> },
         { path: 'questions', element: <Questions /> },
         { path: 'assignTo', element: <AssignTo /> },
+        { path: 'courses', element: <Courses /> },
         { path: 'previousYearPapers', element: <PreviousYearPapers /> },
         // { path: 'products', element: <Products /> },
         // { path: 'blog', element: <Blog /> },

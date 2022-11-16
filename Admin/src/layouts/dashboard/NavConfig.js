@@ -32,6 +32,11 @@ const navConfig = [
     icon: getIcon('eva:people-fill'),
   },
   {
+    title: 'Courses',
+    path: '/courses',
+    icon: getIcon('eva:people-fill'),
+  },
+  {
     title: 'Assign To',
     path: '/assignTo',
     icon: getIcon('eva:people-fill'),
