@@ -112,19 +112,22 @@ export default function AddCourse() {
     courseName: '',
     overview: '',
     price: '',
-    // subjectName: '',
+    subjectName: '',
     // FAQ: '',
   });
 
   const [subjectName, setSubjectName] = React.useState([]);
 // for checklist dropdown
   const handleSubjectChange = (event) => {
+    console.log("in the subjectChange handler");
     const {
       target: { value },
     } = event;
     setSubjectName(typeof value === 'string' ? value.split(',') : value);
     console.log(subjectName);
+    console.log("done with it");
   };
+  console.log("not inside subject CHnage it");
 
   const handleChange = ({ currentTarget: input }) => {
     setCourse({
@@ -173,7 +176,9 @@ export default function AddCourse() {
         courseName: '',
     overview: '',
     price: '',
+    subjectName:''
       })
+      // setSubjectName(subjectName);
       alert("Course added successfully");
     } catch (error) {
       console.log(error);
@@ -184,17 +189,21 @@ export default function AddCourse() {
     e.preventDefault();
     try {
       console.log(fAQquestions);
-      // await axios
-      //   .post("http://localhost:8000/api/ias/addFaq", fAQquestions) 
-      //   .then((res) => {
-      //     console.log(res); 
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-      //   setFAQquestions({
-      //     question:'',
-      //   })
+      console.log(fAQanswers);
+     const register= await axios
+        .post("http://localhost:8000/api/ias/addFaq", fAQquestions) 
+        .then((res) => {
+          console.log(res); 
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      //  ( register?console.log("yes"):console.log("no"));
+      console.log(register)
+        setFAQquestions({
+          question:'',
+          answer:''
+        })
         // setFAQanswers({
         //   answer:'',
         // })
@@ -377,7 +386,7 @@ export default function AddCourse() {
                 />
               </Grid> */}
               <Box>
-                <form onSubmit={handleFAQSubmit}>
+                {/* <form onSubmit={handleFAQSubmit}> */}
                   <Box mt={3}>
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
@@ -531,8 +540,9 @@ export default function AddCourse() {
                       <Grid item xs={12} md={6}>
                         <Button
                           variant="outlined"
-                          type="submit"
+                          // type="submit"
                           fullWidth
+                          onClick={handleFAQSubmit}
                           // component="label"
                           style={{ height: '54px' }}
                         >
@@ -543,7 +553,7 @@ export default function AddCourse() {
                   </Box>
 
                  
-                </form>
+                {/* </form> */}
               </Box>
 
               <Box mt={3}>
